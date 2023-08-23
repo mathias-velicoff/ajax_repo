@@ -10,7 +10,7 @@ function changeVideo() {
 		titleArea.innerHTML = data[number].title;
 		contentArea.innerHTML = data[number].content;
 		videoArea.setAttribute("src", data[number].url);
-		number = (number + 1) % data.length;
+		number == 2 ? (number = 0) : number++;
 	});
 }
 
