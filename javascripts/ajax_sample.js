@@ -1,26 +1,27 @@
-let number = 0; //--1
-const titleArea = document.getElementById("title"); //--2
-const contentArea = document.getElementById("content"); //--2
-const videoArea = document.getElementById("video"); //--2
-const button = document.getElementById('btn'); //--3
+$(function() {
+  const button = $("#btn");
+  const videoArea = $("#video");
+  const titleArea = $("#title");
+  const contentArea = $("#content");
+  let number = 0;
 
-function getData() {
-  button.addEventListener('click', e => { //--4
-    const request = new XMLHttpRequest();
-    request.onreadystatechange = function() {
-      if (request.readyState == 4) {
-        if(request.status == 200) {
-          titleArea.innerHTML = request.response[number].title; //--5
-          contentArea.innerHTML = request.response[number].content; //--5
-          videoArea.setAttribute("src", request.response[number].url); //--6
-          number == 2 ? number = 0 : number++; //--7
-        }
+  function getData() {
+    $.ajax('ajax.json',{
+      success: function(data){
+        return data; //--1
       }
-    }
-    request.open("GET", "ajax.json");
-    request.responseType = "json";
-    request.send(null);
-  })
-}
+    })
+  };
 
-window.onload = getData;
+  function changeVideo() {
+    button.click(function(){
+      const videoData = getData(); //--2
+      videoArea.html(videoData[number].url);
+      titleArea.html(videoData[number].title);
+      contentArea.html(videoData[number].content);
+      number == 2 ? number = 0 : number++;
+    });
+  };
+
+  changeVideo();
+})
